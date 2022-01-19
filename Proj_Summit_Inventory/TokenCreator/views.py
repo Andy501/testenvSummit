@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -8,7 +9,6 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 
 
-from .serializers import TokenSerializer
 
 # This service should have 4 endpoint(s) to generate a JWT token using a Secret Key
 
@@ -21,16 +21,14 @@ from .serializers import TokenSerializer
 
 # Endpoint A - token with read_product permission
 
-
+#build the service inside of the endpoints.
 
 
 ###TODO: Hide instock field from non admins
 
 class ReadProductView(generics.ListAPIView):
 
-    # #permissions rule
-    # authentication_classes = [BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     queryset = Product.objects.filter(delete_now =False)
 
@@ -57,8 +55,6 @@ class ReadAndManageProduct(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
 
 
-    def testing(self):
-        return "How class based view"
 
 #
 class AdminManageProduct(generics.RetrieveUpdateDestroyAPIView):
@@ -68,19 +64,14 @@ class AdminManageProduct(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all() #admin can hard delete
     serializer_class = ProductSerializer
 
-    def testing(self):
-        return "How class based view"
 
 
-def TokenViewOnly(request):
 
-    #if token less than 10 mins share it
-    #if negatve or greater create new token
-    #in 10 minutes call self and .save to tokenfield and update time stamp
-    pass
 
-def TokenCreateView(request):
-    pass
 
-def TokenAdmin(request):
-    pass
+   # """Backend has cache expiring in 10 mins"""
+   #  keys = cache.get_or_set('my_new_key', 'my new value')
+   #  #if token less than 10 mins share it
+   #  #if negatve or greater create new token
+   #  #in 10 minutes call self and .save to tokenfield and update time stamp
+   #  pass

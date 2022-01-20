@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.conf.urls import include
 from django.urls import path
 
-#appName =
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('__debug__/', include('debug_toolbar.urls')),
-    path('api/user_auth/', include('TokenCreator.urls')),
-    #path('api/', include('Inventory_API.urls')), #routing of app calls
+    path('__debug__/', include('debug_toolbar.urls')), #troubleshooting framework
+    path('api-auth/', include('rest_framework.urls')), #required for rest api login page
+    path('api/user_auth/', include('TokenCreator.urls')), #custom application
+
 ]

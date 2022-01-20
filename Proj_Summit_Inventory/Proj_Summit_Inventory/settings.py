@@ -35,7 +35,7 @@ INTERNAL_IPS = [
 ]
 
 
-# Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', #Prebuilt library for tokens
 
     'TokenCreator',#Business logic for handling dynamically created tokens
-    'Inventory_API', #Proprietary Application & Business Logic
 
 ]
 
@@ -69,7 +68,9 @@ ROOT_URLCONF = 'Proj_Summit_Inventory.urls'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',  #Token authentication
+
     ],
 }
 
@@ -105,20 +106,18 @@ DATABASES = {
 
 
 #python manage.py createcachetable
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-#         'LOCATION': 'TOKEN_cache_table',
-#         'TIMEOUT': 600, #=10 minutes in second ###needs to be 10 minutes. #if no key create one
-#         'OPTIONS': {
-#             'MAX_ENTRIES': 5
-#         }
-#
-#     }
-# }
-""". Instead, expired cache entries 
-are culled each time add(), set(), or touch() is called.
-"""
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'TOKEN_cache_table',
+        'TIMEOUT': 600, #=10 minutes in second
+        'OPTIONS': {
+            'MAX_ENTRIES': 5
+        }
+
+    }
+}
+
 
 
 
